@@ -237,8 +237,16 @@ namespace Chat_Client
 
         public static void Send(Socket client, String data)
         {
-            byte[] bytedata = Encoding.ASCII.GetBytes(data);
-            client.BeginSend(bytedata, 0, bytedata.Length, 0, new AsyncCallback(sendCallback), client);
+            try
+            {
+                byte[] bytedata = Encoding.ASCII.GetBytes(data);
+                client.BeginSend(bytedata, 0, bytedata.Length, 0, new AsyncCallback(sendCallback), client);
+            }
+            catch(Exception e)
+            {
+                DialogResult re = MessageBox.Show("Connection error occured", "Connection Error", MessageBoxButtons.OK);
+                Application.Exit();
+            }
         }
 
         private static void sendCallback(IAsyncResult ar)

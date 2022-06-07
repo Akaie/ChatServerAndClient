@@ -125,8 +125,9 @@ namespace Chat_Client
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.txt_name);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Connect...";
             this.ResumeLayout(false);
             this.PerformLayout();
 

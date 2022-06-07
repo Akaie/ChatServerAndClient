@@ -86,7 +86,6 @@ namespace Chat_Server
                         if (content.StartsWith("0:"))
                         {
                             content = content.Substring(2);
-                            Console.WriteLine(content);
                             user_noip uname = JsonSerializer.Deserialize<user_noip>(content, options);
                             Console.WriteLine("User requested username " + uname.username);
                             Boolean taken_user = false;
@@ -133,12 +132,18 @@ namespace Chat_Server
                         else if (content.StartsWith("2:"))
                         {
                             content = content.Replace("2:", "");
+                            IPAddress current_ip = IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString());
                             message m = JsonSerializer.Deserialize<message>(content, options);
+                            user sending_user = null;
                             foreach (user u in users)
                             {
                                 u.buffer.Add(m);
+                                if (current_ip.Equals(u.ip))
+                                {
+                                    sending_user = u;
+                                }
                             }
-                            Console.WriteLine("Message recieved from " + m.username + ":" + m.content);
+                            Console.WriteLine("Message recieved from " + m.username + " (" + sending_user.ip + "): " + m.content);
                         }
                         else if (content.Equals("3"))
                         {
@@ -160,8 +165,8 @@ namespace Chat_Server
                                 if (polling_user.buffer.Count > 0)
                                 {
                                     string mess = JsonSerializer.Serialize(polling_user.buffer, options);
-                                    Console.WriteLine("Polling response sent to {0}.", current_ip.ToString());
                                     polling_user.buffer.Clear();
+                                    Console.WriteLine(polling_user.username + " requested new messages, sending...");
                                     Send(handler, mess);
                                 }
                                 else
@@ -185,6 +190,7 @@ namespace Chat_Server
                                 if (!current_ip.Equals(u.ip) && u.username == new_user.username)
                                 {
                                     taken = true;
+                                    Console.WriteLine(u.username + " requested new username. Requested username " + new_user.username + " is taken.");
                                 }
                             }
                             if (taken)
@@ -200,6 +206,7 @@ namespace Chat_Server
                                         u.username = new_user.username;
                                         u.color = new_user.color;
                                         u.backgroundColor = new_user.backgroundColor;
+                                        Console.WriteLine(u.username + " requested new username. Requested username " + new_user.username + " is available. Granting requesst...");
                                         break;
                                     }
                                 }

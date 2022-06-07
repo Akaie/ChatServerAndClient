@@ -110,7 +110,7 @@ namespace Chat_Client
             this.Controls.Add(this.txt_name);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form3";
-            this.Text = "Form3";
+            this.Text = "Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -98,8 +98,9 @@ namespace Chat_Client
             this.Controls.Add(this.txt_chat);
             this.Controls.Add(this.btn_send);
             this.Controls.Add(this.lst_chat);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.Text = "Chat";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form2_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
